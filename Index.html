@@ -1,52 +1,46 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nora AI - SS Studios</title>
+    <title>Nora AI - Debug Mode</title>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .box { background: #1e293b; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; border: 2px solid #38bdf8; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #38bdf8; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        #rezultat { margin-top: 15px; padding: 10px; background: #0f172a; border-radius: 8px; min-height: 40px; }
+        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding-top: 50px; }
+        input { padding: 10px; width: 80%; border-radius: 5px; }
+        button { padding: 10px 20px; margin-top: 10px; background: #38bdf8; border: none; border-radius: 5px; cursor: pointer; }
+        #log { margin-top: 20px; color: #fb7185; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2>Nora AI 🤖</h2>
-        <input type="text" id="unos" placeholder="Pitaj me iskreno...">
-        <button onclick="posalji()">POŠALJI PORUKU</button>
-        <div id="rezultat">Čekam tvoje pitanje, Pavle...</div>
-    </div>
+    <h2>Nora AI (Provera sistema) 🤖</h2>
+    <input type="text" id="pitanje" placeholder="Napiši bilo šta...">
+    <br>
+    <button onclick="proveri()">TESTIRAJ ODMAH</button>
+    <div id="log">Status: Čekam komandu...</div>
 
     <script>
-        const MOJ_KLJUC = "AIzaSyDxbDoztDuroBhL61IVDZ4ZPBGogST18nA";
+        const KEY = "AIzaSyDxbDoztDuroBhL61IVDZ4ZPBGogST18nA";
 
-        async function posalji() {
-            const pitanje = document.getElementById('unos').value;
-            const ekran = document.getElementById('rezultat');
-            if(!pitanje) return;
-
-            ekran.innerText = "Nora se povezuje sa serverom... ✨";
+        async function proveri() {
+            const ispis = document.getElementById('log');
+            const p = document.getElementById('pitanje').value;
+            ispis.innerText = "Šaljem upit Google-u... 🚀";
 
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${MOJ_KLJUC}`, {
+                const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: pitanje }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: p }] }] })
                 });
 
-                const data = await response.json();
+                const d = await r.json();
 
-                if (data.error) {
-                    // Ako ne radi, ispisaće TAČNO šta je problem (npr. INVALID_ARGUMENT)
-                    ekran.innerText = "SYSTEM ERROR: " + data.error.message;
+                if (d.error) {
+                    ispis.innerText = "GREŠKA: " + d.error.message;
                 } else {
-                    ekran.innerText = data.candidates[0].content.parts[0].text;
+                    ispis.innerText = "USPEH: " + d.candidates[0].content.parts[0].text;
                 }
-            } catch (err) {
-                ekran.innerText = "GREŠKA U KODU: " + err.message;
+            } catch (e) {
+                ispis.innerText = "PROBLEM SA INTERNETOM: " + e.message;
             }
         }
     </script>
