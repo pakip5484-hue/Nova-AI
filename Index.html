@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nora AI - SS Studios</title>
+    <style>
+        body { background: #0f172a; color: white; font-family: sans-serif; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #1e293b; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; width: 320px; border: 1px solid #334155; }
+        h1 { color: #38bdf8; margin-top: 0; }
+        input { width: 90%; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 15px; outline: none; }
+        button { background: #38bdf8; color: #0f172a; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 10px; }
+        .github-btn { background: #24292e; color: white; border: 1px solid #444; }
+        #odgovor { margin-top: 20px; color: #cbd5e1; min-height: 40px; font-style: italic; }
+        .footer { position: fixed; bottom: 15px; font-size: 11px; color: #64748b; text-align: center; width: 90%; line-height: 1.4; }
+        .studio-tag { font-size: 14px; color: #38bdf8; margin-bottom: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="studio-tag">SS Studios predstavlja</div>
+
+    <div class="card">
+        <h1>Nora AI 🤖</h1>
+        <button class="github-btn" id="loginBtn" onclick="prijaviSe()">Sign in with GitHub</button>
+        <div id="mainApp" style="display:none;">
+            <input type="text" id="pitanje" placeholder="Pitaj Noru nešto...">
+            <button onclick="pitajNoru()">Pošalji</button>
+            <div id="odgovor">Spremna sam za tvoja pitanja.</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Veštačka Inteligencija Može da pogreši. Zato proverite Odgovore.
+    </div>
+
+    <script>
+        function prijaviSe() {
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            document.getElementById('odgovor').innerText = "Uspešna prijava! Pitaj me nešto.";
+        }
+
+        function pitajNoru() {
+            const pitanje = document.getElementById('pitanje').value.toLowerCase();
+            const polje = document.getElementById('odgovor');
+            
+            if (pitanje.includes("ko te je napravio")) {
+                polje.innerText = "Mene je napravio SS Studios (Pavle i AI)!";
+            } else if (pitanje.includes("zdravo")) {
+                polje.innerText = "Zdravo! Ja sam Nora, tvoj pametni asistent.";
+            } else {
+                polje.innerText = "Još uvek učim, ali SS Studios me svakim danom unapređuje!";
+            }
+        }
+    </script>
+</body>
+</html>
+
